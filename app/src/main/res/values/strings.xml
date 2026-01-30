@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Evently</string>
+    <string name="next_update_in">Next update in %1$s</string>
 </resources>
