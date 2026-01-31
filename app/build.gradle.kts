@@ -42,9 +42,11 @@ dependencies {
     implementation(libs.material)
     implementation(libs.constraintlayout)
     implementation(libs.fragment)
+    implementation(libs.glide)
 
     // Hilt
     implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation.fragment)
     annotationProcessor(libs.hilt.compiler)
 
     // RxJava 3

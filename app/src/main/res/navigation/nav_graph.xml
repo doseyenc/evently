@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/event_list">
+
+    <fragment
+        android:id="@+id/event_list"
+        android:name="com.doseyenc.evently.ui.home.EventListFragment"
+        android:label="@string/events"
+        tools:layout="@layout/fragment_event_list">
+        <action
+            android:id="@+id/action_event_list_to_event_detail"
+            app:destination="@id/event_detail"
+            app:popUpTo="@id/event_list"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/event_detail"
+        android:name="com.doseyenc.evently.ui.detail.EventDetailFragment"
+        android:label="Event Detail"
+        tools:layout="@layout/fragment_event_detail">
+        <argument
+            android:name="eventId"
+            app:argType="string" />
+    </fragment>
+</navigation>

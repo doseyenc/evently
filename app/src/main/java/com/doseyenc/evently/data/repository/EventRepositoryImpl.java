@@ -148,11 +148,11 @@ public final class EventRepositoryImpl implements EventRepository {
     private static List<Event> getEventList(long todayDate, long futureDate, long pastDate) {
         List<Event> list = new ArrayList<>();
         list.add(new Event("e1", "Global Tech Summit 2024", "Leading tech conference in San Francisco.",
-                null, todayDate, "San Francisco, CA • Nov 12-14"));
+                "event_1", todayDate, "San Francisco, CA • Nov 12-14"));
         list.add(new Event("e2", "Local Charity Marathon", "Annual charity run through the city.",
-                null, futureDate, "City Center • Oct 25"));
+                "event_2", futureDate, "City Center • Oct 25"));
         list.add(new Event("e3", "Modern Art Exhibition", "Contemporary art from local artists.",
-                null, pastDate, "Gallery District • Oct 26"));
+                "event_3", pastDate, "Gallery District • Oct 26"));
         return list;
     }
 

@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Evently</string>
     <string name="next_update_in">Next update in %1$s</string>
+    <string name="events">Events</string>
+    <string name="filter_all">All</string>
+    <string name="filter_today">Today</string>
+    <string name="filter_upcoming">Upcoming</string>
+    <string name="filter_past">Past</string>
+    <string name="events_empty">No events found for this filter</string>
 </resources>
