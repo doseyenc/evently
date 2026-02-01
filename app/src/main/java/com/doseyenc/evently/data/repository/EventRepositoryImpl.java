@@ -162,34 +162,52 @@ public final class EventRepositoryImpl implements EventRepository, ParticipantRe
 
     private Map<String, List<Participant>> createMockParticipants() {
         Map<String, List<Participant>> map = new ConcurrentHashMap<>();
-        List<Participant> list = new ArrayList<>();
-        list.add(new Participant("p1", "Alex Rivera", "Senior Developer @ TechCorp", null));
-        list.add(new Participant("p2", "Sarah Chen", "Product Manager @ Innovate", null));
-        list.add(new Participant("p3", "Marcus Johnson", "Design Lead", null));
-        list.add(new Participant("p4", "Elena Rodriguez", "DevOps Engineer", null));
-        list.add(new Participant("p5", "David Kim", "Backend Developer", null));
-        list.add(new Participant("p6", "Maya Patel", "UX Researcher", null));
-        map.put("e1", list);
-        map.put("e2", new ArrayList<>());
-        map.put("e3", new ArrayList<>());
+        List<Participant> allParticipants = new ArrayList<>();
+        allParticipants.add(new Participant("p1", "Alex Rivera", "Senior Developer @ TechCorp", "p1"));
+        allParticipants.add(new Participant("p2", "Sarah Chen", "Product Manager @ Innovate", "p2"));
+        allParticipants.add(new Participant("p3", "Marcus Johnson", "Design Lead", "p3"));
+        allParticipants.add(new Participant("p4", "Elena Rodriguez", "DevOps Engineer", "p4"));
+        allParticipants.add(new Participant("p5", "David Kim", "Backend Developer", "p5"));
+        allParticipants.add(new Participant("p6", "Maya Patel", "UX Researcher", "p6"));
+        map.put("e1", new ArrayList<>(allParticipants));
+        map.put("e2", new ArrayList<>(allParticipants));
+        map.put("e3", new ArrayList<>(allParticipants));
         return map;
     }
 
     private Map<String, List<Comment>> createMockComments() {
         Map<String, List<Comment>> map = new ConcurrentHashMap<>();
         long base = System.currentTimeMillis() - 3600000L;
-        List<Comment> list = new ArrayList<>();
-        list.add(new Comment("c1", "e1", "u1", "Alex Rivera", null,
+
+        List<Comment> e1Comments = new ArrayList<>();
+        e1Comments.add(new Comment("c1", "e1", "u1", "Alex Rivera", null,
                 "Looking forward to the keynote!", base, null, 12, false));
-        list.add(new Comment("c2", "e1", "u2", "Sarah Jenkins", null,
+        e1Comments.add(new Comment("c2", "e1", "u2", "Sarah Jenkins", null,
                 "Same here, the lineup is great.", base + 60000, null, 5, false));
-        list.add(new Comment("c3", "e1", "u3", "Marcus Chen", null,
+        e1Comments.add(new Comment("c3", "e1", "u3", "Marcus Chen", null,
                 "Agreed!", base + 120000, "c2", 2, false));
-        list.add(new Comment("c4", "e1", "u4", "Elena Rodriguez", null,
+        e1Comments.add(new Comment("c4", "e1", "u4", "Elena Rodriguez", null,
                 "See you all there!", base + 180000, null, 0, false));
-        map.put("e1", list);
-        map.put("e2", new ArrayList<>());
-        map.put("e3", new ArrayList<>());
+        map.put("e1", e1Comments);
+
+        List<Comment> e2Comments = new ArrayList<>();
+        e2Comments.add(new Comment("c5", "e2", "u1", "Alex Rivera", null,
+                "Excited for the marathon!", base, null, 3, false));
+        e2Comments.add(new Comment("c6", "e2", "u2", "Sarah Jenkins", null,
+                "See you at the finish line.", base + 90000, null, 1, false));
+        e2Comments.add(new Comment("c7", "e2", "u4", "Elena Rodriguez", null,
+                "Good luck everyone!", base + 240000, null, 0, false));
+        map.put("e2", e2Comments);
+
+        List<Comment> e3Comments = new ArrayList<>();
+        e3Comments.add(new Comment("c8", "e3", "u3", "Marcus Chen", null,
+                "The exhibition looks amazing.", base + 120000, null, 7, false));
+        e3Comments.add(new Comment("c9", "e3", "u5", "David Kim", null,
+                "Worth visiting for sure.", base + 300000, null, 2, false));
+        e3Comments.add(new Comment("c10", "e3", "u6", "Maya Patel", null,
+                "Loved the digital installations!", base + 420000, "c8", 0, false));
+        map.put("e3", e3Comments);
+
         return map;
     }
 }

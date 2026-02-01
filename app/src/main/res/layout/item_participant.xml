@@ -17,6 +17,7 @@
         android:paddingVertical="@dimen/spacing_medium">
 
         <ImageView
+            android:id="@+id/imageParticipant"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@color/outline_variant"
