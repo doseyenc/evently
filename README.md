@@ -41,7 +41,7 @@ sources:
 ### 2. Data Layer
 
 - **Repository Implementation:** `EventRepositoryImpl` implements event, participant, comment, and
-  live-status logic (mock data; Room or remote can be plugged in later).
+  live-status logic (mock data).
 - **No data entities in domain:** Domain models are used end-to-end; mapping can be added when
   persisting to Room/API.
 
