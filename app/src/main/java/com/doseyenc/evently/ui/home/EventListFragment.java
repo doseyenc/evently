@@ -1,14 +1,22 @@
 package com.doseyenc.evently.ui.home;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.core.view.WindowCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.doseyenc.evently.R;
 import com.doseyenc.evently.databinding.FragmentEventListBinding;
@@ -20,7 +28,7 @@ import java.util.List;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class EventListFragment extends Fragment {
+public class EventListFragment extends Fragment implements EventListHandler {
 
     private FragmentEventListBinding binding;
     private HomeViewModel viewModel;
@@ -39,6 +47,8 @@ public class EventListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
+        binding.setHandler(this);
+        setupToolbar();
         setupRecyclerView();
         setupChips();
         observeViewState();
@@ -46,9 +56,48 @@ public class EventListFragment extends Fragment {
         viewModel.loadEvents();
     }
 
+    @Override
+    public void onFabClick(View view) {
+        Toast.makeText(requireContext(), R.string.fab_clicked, Toast.LENGTH_SHORT).show();
+    }
+
+    private void setupToolbar() {
+        binding.toolbar.setTitle("");
+        View titleView = LayoutInflater.from(requireContext()).inflate(R.layout.toolbar_title_events, binding.toolbar, false);
+        Toolbar.LayoutParams titleLp = new Toolbar.LayoutParams(Toolbar.LayoutParams.MATCH_PARENT, Toolbar.LayoutParams.MATCH_PARENT);
+        titleLp.gravity = Gravity.CENTER;
+        binding.toolbar.addView(titleView, 0, titleLp);
+        binding.toolbar.setNavigationOnClickListener(v -> binding.drawerLayout.openDrawer(GravityCompat.START));
+
+        if (getActivity() != null) {
+            getActivity().getWindow().setStatusBarColor(
+                    ContextCompat.getColor(requireContext(), R.color.white));
+            WindowCompat.getInsetsController(getActivity().getWindow(), getActivity().getWindow().getDecorView())
+                    .setAppearanceLightStatusBars(true);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getActivity() != null && binding != null) {
+            getActivity().getWindow().setStatusBarColor(
+                    ContextCompat.getColor(requireContext(), R.color.white));
+            WindowCompat.getInsetsController(getActivity().getWindow(), getActivity().getWindow().getDecorView())
+                    .setAppearanceLightStatusBars(true);
+        }
+    }
+
     private void setupRecyclerView() {
         adapter = new EventListAdapter(viewModel);
         binding.recyclerEvents.setAdapter(adapter);
+        int spacingPx = getResources().getDimensionPixelSize(R.dimen.spacing_medium);
+        binding.recyclerEvents.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull android.graphics.Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                outRect.bottom = spacingPx;
+            }
+        });
     }
 
     private void setupChips() {

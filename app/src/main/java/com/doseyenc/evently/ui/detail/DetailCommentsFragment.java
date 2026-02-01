@@ -18,10 +18,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class DetailCommentsFragment extends Fragment {
 
     private FragmentDetailCommentsBinding binding;
-    private EventDetailViewModel viewModel;
+    private DetailCommentsViewModel viewModel;
     private CommentsAdapter adapter;
     private Comment replyingToComment;
 
@@ -36,7 +39,9 @@ public class DetailCommentsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel = new ViewModelProvider(requireParentFragment()).get(EventDetailViewModel.class);
+        String eventId = EventDetailFragmentArgs.fromBundle(requireParentFragment().requireArguments()).getEventId();
+        viewModel = new ViewModelProvider(this).get(DetailCommentsViewModel.class);
+        viewModel.init(eventId);
         binding.setViewModel(viewModel);
 
         adapter = new CommentsAdapter(viewModel);

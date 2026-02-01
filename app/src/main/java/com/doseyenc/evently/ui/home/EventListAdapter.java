@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.doseyenc.evently.R;
 import com.doseyenc.evently.databinding.ItemEventBinding;
 import com.doseyenc.evently.domain.model.Event;
@@ -58,19 +56,21 @@ public class EventListAdapter extends ListAdapter<Event, EventListAdapter.EventV
         }
 
         private void setEventImage(@Nullable String imageUrl) {
-            int resId = R.drawable.ic_event_placeholder;
-            if (imageUrl != null && !imageUrl.isEmpty()) {
-                int id = itemView.getContext().getResources()
-                        .getIdentifier(imageUrl, "drawable", itemView.getContext().getPackageName());
-                if (id != 0) resId = id;
+            int resId = getEventImageResId(imageUrl);
+            binding.imageEvent.setImageResource(resId);
+        }
+
+        private int getEventImageResId(@Nullable String imageUrl) {
+            if (imageUrl == null || imageUrl.isEmpty()) return R.drawable.ic_event_placeholder;
+            switch (imageUrl) {
+                case "event_1": return R.drawable.event_1;
+                case "event_2": return R.drawable.event_2;
+                case "event_3": return R.drawable.event_3;
+                default:
+                    int id = itemView.getContext().getResources()
+                            .getIdentifier(imageUrl, "drawable", itemView.getContext().getPackageName());
+                    return id != 0 ? id : R.drawable.ic_event_placeholder;
             }
-            Glide.with(itemView.getContext())
-                    .load(resId)
-                    .placeholder(R.drawable.ic_event_placeholder)
-                    .error(R.drawable.ic_event_placeholder)
-                    .centerCrop()
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .into(binding.imageEvent);
         }
     }
 

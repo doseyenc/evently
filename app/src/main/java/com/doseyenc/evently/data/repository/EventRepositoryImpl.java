@@ -13,7 +13,8 @@ import com.doseyenc.evently.domain.repository.ParticipantRepository;
 import com.doseyenc.evently.util.Constants;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -92,7 +93,7 @@ public final class EventRepositoryImpl implements EventRepository, ParticipantRe
             List<Comment> list = commentsByEventId.computeIfAbsent(eventId, k -> new ArrayList<>());
             Comment comment = new Comment(
                     "c_" + System.currentTimeMillis(), eventId, CURRENT_USER_ID, CURRENT_USER_NAME,
-                    null, text, System.currentTimeMillis(), parentCommentId, 0, false
+                    "me", text, System.currentTimeMillis(), parentCommentId, 0, false
             );
             synchronized (list) {
                 list.add(comment);
@@ -134,17 +135,10 @@ public final class EventRepositoryImpl implements EventRepository, ParticipantRe
     }
 
     private List<Event> createMockEvents() {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        long todayDate = cal.getTimeInMillis();
-        long oneDayMs = 86400000L;
-
-        long pastDate = todayDate - 2 * oneDayMs;   // 2 gün önce
-        long futureDate = todayDate + oneDayMs;     // yarın
-
+        ZonedDateTime startOfToday = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS);
+        long todayDate = startOfToday.toInstant().toEpochMilli();
+        long pastDate = startOfToday.minusDays(2).toInstant().toEpochMilli();
+        long futureDate = startOfToday.plusDays(1).toInstant().toEpochMilli();
         return getEventList(todayDate, futureDate, pastDate);
     }
 
@@ -180,31 +174,31 @@ public final class EventRepositoryImpl implements EventRepository, ParticipantRe
         long base = System.currentTimeMillis() - 3600000L;
 
         List<Comment> e1Comments = new ArrayList<>();
-        e1Comments.add(new Comment("c1", "e1", "u1", "Alex Rivera", null,
+        e1Comments.add(new Comment("c1", "e1", "u1", "Alex Rivera", "p1",
                 "Looking forward to the keynote!", base, null, 12, false));
-        e1Comments.add(new Comment("c2", "e1", "u2", "Sarah Jenkins", null,
+        e1Comments.add(new Comment("c2", "e1", "u2", "Sarah Jenkins", "p2",
                 "Same here, the lineup is great.", base + 60000, null, 5, false));
-        e1Comments.add(new Comment("c3", "e1", "u3", "Marcus Chen", null,
+        e1Comments.add(new Comment("c3", "e1", "u3", "Marcus Chen", "p3",
                 "Agreed!", base + 120000, "c2", 2, false));
-        e1Comments.add(new Comment("c4", "e1", "u4", "Elena Rodriguez", null,
+        e1Comments.add(new Comment("c4", "e1", "u4", "Elena Rodriguez", "p4",
                 "See you all there!", base + 180000, null, 0, false));
         map.put("e1", e1Comments);
 
         List<Comment> e2Comments = new ArrayList<>();
-        e2Comments.add(new Comment("c5", "e2", "u1", "Alex Rivera", null,
+        e2Comments.add(new Comment("c5", "e2", "u1", "Alex Rivera", "p1",
                 "Excited for the marathon!", base, null, 3, false));
-        e2Comments.add(new Comment("c6", "e2", "u2", "Sarah Jenkins", null,
+        e2Comments.add(new Comment("c6", "e2", "u2", "Sarah Jenkins", "p2",
                 "See you at the finish line.", base + 90000, null, 1, false));
-        e2Comments.add(new Comment("c7", "e2", "u4", "Elena Rodriguez", null,
+        e2Comments.add(new Comment("c7", "e2", "u4", "Elena Rodriguez", "p4",
                 "Good luck everyone!", base + 240000, null, 0, false));
         map.put("e2", e2Comments);
 
         List<Comment> e3Comments = new ArrayList<>();
-        e3Comments.add(new Comment("c8", "e3", "u3", "Marcus Chen", null,
+        e3Comments.add(new Comment("c8", "e3", "u3", "Marcus Chen", "p3",
                 "The exhibition looks amazing.", base + 120000, null, 7, false));
-        e3Comments.add(new Comment("c9", "e3", "u5", "David Kim", null,
+        e3Comments.add(new Comment("c9", "e3", "u5", "David Kim", "p5",
                 "Worth visiting for sure.", base + 300000, null, 2, false));
-        e3Comments.add(new Comment("c10", "e3", "u6", "Maya Patel", null,
+        e3Comments.add(new Comment("c10", "e3", "u6", "Maya Patel", "p6",
                 "Loved the digital installations!", base + 420000, "c8", 0, false));
         map.put("e3", e3Comments);
 

@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.doseyenc.evently.ui.detail.EventDetailViewModel" />
+            type="com.doseyenc.evently.ui.detail.DetailParticipantsViewModel" />
     </data>
 
     <LinearLayout
@@ -23,10 +23,13 @@
             android:layout_marginHorizontal="@dimen/spacing_large"
             android:layout_marginTop="@dimen/spacing_medium"
             android:layout_marginBottom="@dimen/spacing_small"
+            app:boxBackgroundColor="@color/gray_100"
             app:boxCornerRadiusBottomEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
             app:boxCornerRadiusTopStart="12dp"
+            app:boxStrokeColor="@color/gray_100"
+            app:boxStrokeWidth="0dp"
             app:placeholderText="@string/search_participants"
             app:startIconDrawable="@drawable/ic_search"
             app:startIconTint="@color/on_surface_variant">

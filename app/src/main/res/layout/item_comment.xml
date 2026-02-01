@@ -22,25 +22,43 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
-            <TextView
-                android:id="@+id/userName"
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imageCommentAvatar"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:contentDescription="@null"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_event_placeholder"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Evently.AvatarCircle" />
+
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@{comment.userName}"
-                android:textColor="@color/primary"
-                android:textSize="@dimen/text_size_medium"
-                android:textStyle="bold"
-                tools:text="Alex Rivera" />
+                android:layout_marginStart="@dimen/spacing_medium"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-            <TextView
-                android:id="@+id/timeAgo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{timeAgoText}"
-                android:textColor="@color/on_surface_variant"
-                android:textSize="@dimen/text_size_small"
-                tools:text="2h ago" />
+                <TextView
+                    android:id="@+id/userName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{comment.userName}"
+                    android:textColor="@color/primary"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textStyle="bold"
+                    tools:text="Alex Rivera" />
+
+                <TextView
+                    android:id="@+id/timeAgo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_small"
+                    android:text="@{timeAgoText}"
+                    android:textColor="@color/on_surface_variant"
+                    android:textSize="@dimen/text_size_small"
+                    tools:text="2h ago" />
+            </LinearLayout>
         </LinearLayout>
 
         <TextView
@@ -82,18 +100,34 @@
                 android:textSize="@dimen/text_size_small"
                 tools:text="12" />
 
-            <TextView
+            <LinearLayout
                 android:id="@+id/buttonReply"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_large"
                 android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
                 android:onClick="@{() -> handler.onReplyClick(comment)}"
-                android:padding="@dimen/spacing_small"
-                android:text="@string/reply"
-                android:textColor="@color/primary"
-                android:textSize="@dimen/text_size_small"
-                android:visibility="visible" />
+                android:orientation="horizontal"
+                android:padding="@dimen/spacing_small">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_reply"
+                    app:tint="@color/primary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_small"
+                    android:text="@string/reply"
+                    android:textColor="@color/primary"
+                    android:textSize="@dimen/text_size_small" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </layout>

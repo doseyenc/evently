@@ -1,24 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="viewModel" type="com.doseyenc.evently.ui.detail.EventDetailViewModel" />
+
+        <variable
+            name="viewModel"
+            type="com.doseyenc.evently.ui.detail.DetailLiveStatusViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
         android:padding="@dimen/spacing_xxlarge">
 
-        <ImageView
-            android:id="@+id/iconLive"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_live_circle" />
+        <FrameLayout
+            android:id="@+id/iconLiveContainer"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            app:layout_constraintBottom_toTopOf="@id/textLiveStatus"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.4"
+            app:layout_constraintVertical_chainStyle="packed">
+
+            <ImageView
+                android:id="@+id/ripple1"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:contentDescription="@null"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_live_ripple_ring" />
+
+            <ImageView
+                android:id="@+id/ripple2"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:contentDescription="@null"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_live_ripple_ring" />
+
+            <ImageView
+                android:id="@+id/ripple3"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:contentDescription="@null"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_live_ripple_ring" />
+
+            <ImageView
+                android:id="@+id/iconLive"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_live_circle" />
+
+            <ImageView
+                android:id="@+id/iconSensor"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_sensor"
+                app:tint="@color/white" />
+        </FrameLayout>
 
         <TextView
             android:id="@+id/textLiveStatus"
@@ -29,6 +80,10 @@
             android:textColor="@color/on_surface"
             android:textSize="18sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/textNextUpdate"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iconLiveContainer"
             tools:text="Event is Live" />
 
         <TextView
@@ -37,23 +92,60 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_medium"
             android:drawablePadding="@dimen/spacing_small"
-            android:drawableStart="@drawable/ic_clock"
             android:gravity="center"
             android:textColor="@color/on_surface_variant"
             android:textSize="@dimen/text_size_medium"
+            app:drawableStartCompat="@drawable/ic_clock"
+            app:layout_constraintBottom_toTopOf="@id/buttonRefresh"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textLiveStatus"
             tools:text="Next update in 30s" />
 
         <Button
             android:id="@+id/buttonRefresh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
             android:background="@drawable/bg_button_refresh"
             android:onClick="@{() -> viewModel.refreshLiveStatus()}"
             android:paddingHorizontal="@dimen/spacing_xlarge"
             android:paddingVertical="@dimen/spacing_medium"
             android:text="@string/refresh_now"
             android:textColor="@color/on_surface"
-            android:textSize="@dimen/text_size_medium" />
-    </LinearLayout>
+            android:textSize="@dimen/text_size_medium"
+            app:backgroundTint="@null"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textNextUpdate" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/podcastCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/gray_100"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="@dimen/spacing_medium"
+                android:paddingVertical="@dimen/spacing_xxlarge">
+
+                <ImageView
+                    android:id="@+id/iconPodcast"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_podcast"
+                    app:tint="#DCE6FC" />
+            </FrameLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

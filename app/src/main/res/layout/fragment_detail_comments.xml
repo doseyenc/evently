@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="viewModel" type="com.doseyenc.evently.ui.detail.EventDetailViewModel" />
+        <variable name="viewModel" type="com.doseyenc.evently.ui.detail.DetailCommentsViewModel" />
         <import type="android.view.View" />
     </data>
 
@@ -47,15 +47,15 @@
             android:paddingBottom="@dimen/spacing_large"
             android:background="@color/surface">
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/avatarComment"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginEnd="@dimen/spacing_medium"
-                android:background="@color/outline_variant"
                 android:contentDescription="@null"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_event_placeholder" />
+                android:src="@drawable/me"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Evently.AvatarCircle" />
 
             <LinearLayout
                 android:layout_width="0dp"

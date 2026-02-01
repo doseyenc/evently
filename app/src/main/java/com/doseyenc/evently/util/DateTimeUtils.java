@@ -1,6 +1,8 @@
 package com.doseyenc.evently.util;
 
-import java.util.Calendar;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public final class DateTimeUtils {
@@ -17,10 +19,9 @@ public final class DateTimeUtils {
     }
 
     public static String formatDateLabel(long dateMillis) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(dateMillis);
-        String month = cal.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        return (month != null ? month.toUpperCase(Locale.US) : "") + " " + day;
+        return Instant.ofEpochMilli(dateMillis)
+                .atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("MMM d", Locale.US))
+                .toUpperCase(Locale.US);
     }
 }

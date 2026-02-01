@@ -13,10 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.doseyenc.evently.databinding.FragmentDetailParticipantsBinding;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class DetailParticipantsFragment extends Fragment {
 
     private FragmentDetailParticipantsBinding binding;
-    private EventDetailViewModel viewModel;
+    private DetailParticipantsViewModel viewModel;
     private ParticipantsAdapter adapter;
 
     @Nullable
@@ -30,7 +33,9 @@ public class DetailParticipantsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel = new ViewModelProvider(requireParentFragment()).get(EventDetailViewModel.class);
+        String eventId = EventDetailFragmentArgs.fromBundle(requireParentFragment().requireArguments()).getEventId();
+        viewModel = new ViewModelProvider(this).get(DetailParticipantsViewModel.class);
+        viewModel.init(eventId);
         binding.setViewModel(viewModel);
 
         adapter = new ParticipantsAdapter();

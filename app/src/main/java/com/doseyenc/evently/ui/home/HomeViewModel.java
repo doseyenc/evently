@@ -11,7 +11,8 @@ import com.doseyenc.evently.ui.base.ViewState;
 import com.doseyenc.evently.util.Constants;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -74,14 +75,9 @@ public class HomeViewModel extends BaseViewModel {
         if (events == null) return new ArrayList<>();
         if (type == FilterType.ALL) return new ArrayList<>(events);
 
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        long startOfToday = cal.getTimeInMillis();
-        cal.add(Calendar.DAY_OF_MONTH, 1);
-        long startOfTomorrow = cal.getTimeInMillis();
+        ZonedDateTime startOfTodayZ = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS);
+        long startOfToday = startOfTodayZ.toInstant().toEpochMilli();
+        long startOfTomorrow = startOfTodayZ.plusDays(1).toInstant().toEpochMilli();
 
         List<Event> result = new ArrayList<>();
         for (Event e : events) {
