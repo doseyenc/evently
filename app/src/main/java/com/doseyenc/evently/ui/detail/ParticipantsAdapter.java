@@ -51,8 +51,8 @@ public class ParticipantsAdapter extends ListAdapter<Participant, ParticipantsAd
         }
 
         void bind(Participant p) {
-            binding.name.setText(p.getName());
-            binding.role.setText(p.getRole());
+            binding.setParticipant(p);
+            binding.executePendingBindings();
         }
     }
 }

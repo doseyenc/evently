@@ -1,52 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
-    android:paddingVertical="@dimen/spacing_medium">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@color/outline_variant"
-        android:contentDescription="@null"
-        android:src="@drawable/ic_event_placeholder"
-        android:scaleType="centerCrop" />
+    <data>
+
+        <variable
+            name="participant"
+            type="com.doseyenc.evently.domain.model.Participant" />
+    </data>
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginStart="@dimen/spacing_medium"
-        android:orientation="vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingVertical="@dimen/spacing_medium">
 
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/on_surface"
-            android:textSize="@dimen/text_size_large"
-            android:textStyle="bold"
-            tools:text="Alex Rivera" />
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@color/outline_variant"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_event_placeholder" />
 
-        <TextView
-            android:id="@+id/role"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_small"
-            android:textColor="@color/on_surface_variant"
-            android:textSize="@dimen/text_size_small"
-            tools:text="Senior Developer @ TechCorp" />
+            android:layout_marginStart="@dimen/spacing_medium"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/participantName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{participant.name}"
+                android:textColor="@color/on_surface"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold"
+                tools:text="Alex Rivera" />
+
+            <TextView
+                android:id="@+id/participantRole"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:text="@{participant.role}"
+                android:textColor="@color/on_surface_variant"
+                android:textSize="@dimen/text_size_small"
+                tools:text="Senior Developer @ TechCorp" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/buttonChat"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@null"
+            android:padding="@dimen/spacing_small"
+            android:src="@drawable/ic_chat_bubble" />
     </LinearLayout>
-
-    <ImageButton
-        android:id="@+id/buttonChat"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@null"
-        android:src="@drawable/ic_chat_bubble"
-        android:padding="@dimen/spacing_small" />
-</LinearLayout>
+</layout>
