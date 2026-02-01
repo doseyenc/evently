@@ -1,116 +1,97 @@
-# Evently – Modern Event Management Case Study
+# 📅 Evently – Modern Event Management Case Study
 
-**Java • Android • Clean Architecture • Material 3**
+[![Platform](https://img.shields.io/badge/Platform-Android-green.svg)](https://developer.android.com)
+[![Language](https://img.shields.io/badge/Language-Java%2011-orange.svg)](https://www.oracle.com/java/)
+[![Architecture](https://img.shields.io/badge/Architecture-Clean%20%2B%20MVVM-blue.svg)](https://developer.android.com/topic/architecture)
 
-Evently is a task-focused event tracking application built to demonstrate modern Android development
-practices. It emphasizes clean code, clear separation of concerns, and a solid architectural base
-using **Clean Architecture** and **MVVM**, with use cases and ViewModels split by responsibility.
-
----
-
-## 🚀 Key Features
-
-- **Reactive Data Flow:** Event list and detail data driven by RxJava `Single`/`Observable` with
-  repository abstraction.
-- **Smart Filtering:** Filter events by **All**, **Today**, **Upcoming**, and **Past** via chip
-  selection with instant list updates.
-- **Unified State Management:** Centralized **Loading**, **Success**, **Error**, and **Empty**
-  states using the `ViewState` pattern.
-- **Event Detail Tabs:** **Participants**, **Comments**, and **Live Status** in a single screen with
-  ViewPager2; title/date overlay on event image, comments-only header on Comments tab.
-- **Comments & Participants:** Add comments, like/unlike, reply with icon; search participants; live
-  status with wave animation and countdown.
-- **Modern UI/UX:** Material 3, DrawerLayout, FAB on home, white toolbar/status bar, rounded event
-  cards, Light/Dark mode support.
-- **Type-Safe Navigation:** Safe Args for passing `eventId` between Event List and Event Detail.
+**Evently** is a high-performance event tracking application developed as a technical case study. It demonstrates a robust implementation of modern Android standards, focusing on clean separation of concerns, reactive data management, and lifecycle-aware components.
 
 ---
 
-## 🏗️ Architectural Stack
+## 🎯 Case Study Requirements & Fulfillment
+The project successfully implements all core requirements from the ID3 Android Case Study:
+* **Modern UI:** Built with **Material 3** and **Data Binding** for a seamless, declarative UI.
+* **Architecture:** Structured using **MVVM** and **Clean Architecture** to ensure testability and scalability.
+* **Live Updates:** Real-time "Live Status" monitoring with an automated **30-second polling cycle**.
+* **Lifecycle Awareness:** Intelligent resource management where background updates pause strictly when the tab is not visible or the fragment is in the background.
 
-The project follows **Clean Architecture**, keeping business logic independent of UI and data
-sources:
+---
 
-### 1. Domain Layer 
+## 🏗️ Architectural Deep Dive
 
-- **Entities:** Core models (`Event`, `Comment`, `Participant`, `FilterType`).
-- **Use Cases:** One responsibility per operation (event list/detail, participants, comments, live
-  status).
-- **Repository Interfaces:** Abstractions so domain does not depend on data implementations.
+The application is strictly partitioned into three layers to ensure business logic remains independent of UI and data providers:
 
-### 2. Data Layer
+### 1. Domain Layer (Pure Logic)
+* **Entities:** Core models such as `Event`, `Comment`, and `Participant`.
+* **Use Cases:** Granular, single-responsibility classes like `GetLiveStatusUseCase` and `GetEventDetailUseCase`.
+* **Repository Interfaces:** Defined abstractions to decouple domain logic from specific data implementations (Dependency Inversion).
 
-- **Repository Implementation:** `EventRepositoryImpl` implements event, participant, comment, and
-  live-status logic (mock data).
-- **No data entities in domain:** Domain models are used end-to-end; mapping can be added when
-  persisting to Room/API.
+### 2. Data Layer (Infrastructure)
+* **Repository Implementation:** `EventRepositoryImpl` leverages **RxJava 3** to provide a reactive data stream from mock sources, architected for effortless transition to remote APIs.
 
 ### 3. Presentation Layer (MVVM)
-
-- **ViewModels:** One ViewModel per screen/tab; UI state and use-case orchestration.
-- **State & Events:** `LiveData` for UI state; `SingleLiveEvent` for one-time events (navigation,
-  toasts).
-- **Data Binding & View Binding:** Layouts bound to ViewModels; clicks via handlers for cleaner
-  fragments.
+* **ViewModels:** Orchestrates UI state and business logic execution.
+* **ViewState Pattern:** Centralized state management handling **Loading**, **Success**, and **Error** states reactively via LiveData.
+* **Data Binding:** Optimized interaction between XML layouts and ViewModels, significantly reducing boilerplate code in Fragments.
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Category             | Technologies                                                  |
-|----------------------|---------------------------------------------------------------|
-| Language             | Java 11                                                       |
-| Async / Streams      | RxJava 3                                                      |
-| Dependency Injection | Hilt                                                          |
-| Jetpack              | Navigation (Safe Args), ViewModel, Data Binding, View Binding |
-| UI                   | Material 3, ViewPager2, DrawerLayout, Chips, FAB              |
-| Architecture         | Clean Architecture, MVVM, ViewState pattern                   |
-| Date/Time            | `java.time` (minSdk 26)                                       |
+| Category | Technology | Implementation Detail |
+| :--- | :--- | :--- |
+| **Concurrency** | **RxJava 3** | Manages background threading and periodic status polling. |
+| **DI** | **Hilt** | Manages dependency lifecycles and injection across the app. |
+| **Navigation** | **Safe Args** | Ensures type-safe argument passing (e.g., `eventId`) between screens. |
+| **UI** | **Material 3** | Utilizes ViewPager2, TabLayout, and modern Material components. |
 
 ---
+
+## 🚀 Technical Highlights: The Live Status Challenge
+
+A key requirement was the **Live Status** feature, which updates every 30 seconds but must stop when the tab is not visible.
+
+**The Solution:**
+I implemented a reactive timer using RxJava's `Observable.interval`. To maintain strict lifecycle awareness and resource optimization:
+1.  **Subscription Management:** The polling mechanism is active only when the `LiveStatusFragment` is visible to the user.
+2.  **Resource Cleanup:** All `Disposable` objects are cleared in the ViewModel's `onCleared()` and managed via fragment lifecycle hooks to prevent memory leaks and unnecessary CPU usage.
 
 ---
 
 ## 📸 Screenshots
 
-| Event List                                                                               | Event Detail (Participants)                                                              | Event Detail (Comments)                                                                  |
-|------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
-| ![Ekran Resmi 2026-02-01 22.59.41.png](images/Ekran%20Resmi%202026-02-01%2022.59.41.png) | ![Ekran Resmi 2026-02-01 22.59.50.png](images/Ekran%20Resmi%202026-02-01%2022.59.50.png) | ![Ekran Resmi 2026-02-01 22.59.57.png](images/Ekran%20Resmi%202026-02-01%2022.59.57.png) |
-
-| Event Detail (Live Status)                                                               | Drawer                                                                                   | 
-|------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
-| ![Ekran Resmi 2026-02-01 23.00.27.png](images/Ekran%20Resmi%202026-02-01%2023.00.27.png) | ![Ekran Resmi 2026-02-01 23.03.19.png](images/Ekran%20Resmi%202026-02-01%2023.03.19.png) |
+<table>
+  <tr>
+    <td align="center"><b>Home (Event List)</b></td>
+    <td align="center"><b>Participants Tab</b></td>
+    <td align="center"><b>Comments Tab</b></td>
+    <td align="center"><b>Live Status Tab</b></td>
+  </tr>
+  <tr>
+    <td><img src="images/Ekran%20Resmi%202026-02-01%2022.59.41.png" width="200pt" /></td>
+    <td><img src="images/Ekran%20Resmi%202026-02-01%2022.59.50.png" width="200pt" /></td>
+    <td><img src="images/Ekran%20Resmi%202026-02-01%2022.59.57.png" width="200pt" /></td>
+    <td><img src="images/Ekran%20Resmi%202026-02-01%2023.00.27.png" width="200pt" /></td>
+  </tr>
+</table>
 
 ---
+
+## 📁 Project Structure
+
+```text
+app/src/main/java/com/doseyenc/evently/
+├── domain/         # Entities, Use Cases, Repository Interfaces
+├── data/           # Repository Implementation, Mock Data Sources
+├── di/             # Hilt Dependency Injection Modules
+├── ui/
+│   ├── base/       # ViewState, BaseViewModel, SingleLiveEvent
+│   ├── home/       # Event list, filtering, and main navigation
+│   └── detail/     # ViewPager2 setup, Participants, Comments, Live Status
+└── util/           # DateTime formatters, UI Helpers, Constants
+```
 
 ## 🏁 Getting Started
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/doseyenc/evently.git
-   ```
-
-2. Open the project in **Android Studio**.
-
-3. Wait for **Gradle sync** to finish.
-
-4. Run the app on an **emulator or device** (min SDK **26**).
-
----
-
-## 📁 Project Structure (High Level)
-
-```
-app/src/main/java/com/doseyenc/evently/
-├── domain/           # Entities, use cases, repository interfaces
-├── data/             # Repository implementations
-├── di/               # Hilt modules
-├── ui/
-│   ├── base/         # ViewState, SingleLiveEvent, BaseViewModel
-│   ├── home/         # Event list, FAB, chips, drawer
-│   └── detail/       # Event detail, tabs, participants, comments, live status
-└── util/             # Constants, DateTimeUtils
-```
-
----
-
+1. Clone the repo: `git clone https://github.com/doseyenc/evently.git`
+2. Open in Android Studio.
+3. Ensure **JDK 11** and **Min SDK 26** are configured.
