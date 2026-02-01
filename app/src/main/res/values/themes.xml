@@ -14,4 +14,9 @@
         <item name="android:statusBarColor">@color/primary</item>
         <item name="android:navigationBarColor">@color/surface</item>
     </style>
+
+    <style name="ThemeOverlay.Evently.Toolbar.Primary" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="android:colorControlNormal">@color/on_primary</item>
+        <item name="android:textColorPrimary">@color/on_primary</item>
+    </style>
 </resources>

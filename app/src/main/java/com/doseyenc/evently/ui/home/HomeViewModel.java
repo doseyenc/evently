@@ -4,10 +4,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.doseyenc.evently.domain.model.Event;
-import com.doseyenc.evently.ui.base.SingleLiveEvent;
-import com.doseyenc.evently.domain.repository.EventRepository;
+import com.doseyenc.evently.domain.usecase.GetEventsUseCase;
 import com.doseyenc.evently.ui.base.BaseViewModel;
+import com.doseyenc.evently.ui.base.SingleLiveEvent;
 import com.doseyenc.evently.ui.base.ViewState;
+import com.doseyenc.evently.util.Constants;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,9 +25,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 @HiltViewModel
 public class HomeViewModel extends BaseViewModel {
 
-    private static final long LOADING_DELAY_MS = 400;
-
-    private final EventRepository repository;
+    private final GetEventsUseCase getEventsUseCase;
 
     private final MutableLiveData<ViewState<List<Event>>> eventsViewState = new MutableLiveData<>();
     private final SingleLiveEvent<Event> openEventDetail = new SingleLiveEvent<>();
@@ -35,8 +34,8 @@ public class HomeViewModel extends BaseViewModel {
     private FilterType filterType = FilterType.ALL;
 
     @Inject
-    public HomeViewModel(EventRepository repository) {
-        this.repository = repository;
+    public HomeViewModel(GetEventsUseCase getEventsUseCase) {
+        this.getEventsUseCase = getEventsUseCase;
     }
 
     public LiveData<ViewState<List<Event>>> getEventsViewState() {
@@ -51,8 +50,8 @@ public class HomeViewModel extends BaseViewModel {
         eventsViewState.setValue(ViewState.loading());
 
         addDisposable(
-                repository.getEvents()
-                        .delay(LOADING_DELAY_MS, TimeUnit.MILLISECONDS)
+                getEventsUseCase.execute()
+                        .delay(Constants.Loading.DELAY_MS, TimeUnit.MILLISECONDS)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(

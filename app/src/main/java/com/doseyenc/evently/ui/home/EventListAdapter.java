@@ -14,9 +14,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.doseyenc.evently.R;
 import com.doseyenc.evently.databinding.ItemEventBinding;
 import com.doseyenc.evently.domain.model.Event;
-
-import java.util.Calendar;
-import java.util.Locale;
+import com.doseyenc.evently.util.DateTimeUtils;
 
 public class EventListAdapter extends ListAdapter<Event, EventListAdapter.EventViewHolder> {
 
@@ -41,23 +39,6 @@ public class EventListAdapter extends ListAdapter<Event, EventListAdapter.EventV
         holder.bind(event, viewModel);
     }
 
-    static String formatTimeAgo(long dateMillis) {
-        long now = System.currentTimeMillis();
-        long diff = now - dateMillis;
-        if (diff < 60_000) return "just now";
-        if (diff < 3600_000) return (diff / 60_000) + "m ago";
-        if (diff < 86400_000) return (diff / 3600_000) + "h ago";
-        return (diff / 86400_000) + "d ago";
-    }
-
-    static String formatDateLabel(long dateMillis) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(dateMillis);
-        String month = cal.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        return (month != null ? month.toUpperCase(Locale.US) : null) + " " + day;
-    }
-
     public static final class EventViewHolder extends RecyclerView.ViewHolder {
 
         private final ItemEventBinding binding;
@@ -70,8 +51,8 @@ public class EventListAdapter extends ListAdapter<Event, EventListAdapter.EventV
         void bind(Event event, HomeViewModel viewModel) {
             binding.setEvent(event);
             binding.setViewModel(viewModel);
-            binding.setTimeAgo(formatTimeAgo(event.getDateMillis()));
-            binding.setDateLabel(formatDateLabel(event.getDateMillis()));
+            binding.setTimeAgo(DateTimeUtils.formatTimeAgo(event.getDateMillis()));
+            binding.setDateLabel(DateTimeUtils.formatDateLabel(event.getDateMillis()));
             setEventImage(event.getImageUrl());
             binding.executePendingBindings();
         }

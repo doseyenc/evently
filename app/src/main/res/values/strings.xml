@@ -7,4 +7,20 @@
     <string name="filter_upcoming">Upcoming</string>
     <string name="filter_past">Past</string>
     <string name="events_empty">No events found for this filter</string>
+    <string name="tab_participants">Participants</string>
+    <string name="tab_comments">Comments</string>
+    <string name="tab_live_status">Live Status</string>
+    <string name="add_comment">Add a comment…</string>
+    <string name="post">Post</string>
+    <string name="live_now">Live now</string>
+    <string name="participants_empty">No participants</string>
+    <string name="participants_search_empty">No participants match your search</string>
+    <string name="comments_empty">No comments yet</string>
+    <string name="reply">Reply</string>
+    <string name="event_is_live">Event is Live</string>
+    <string name="refresh_now">Refresh Now</string>
+    <string name="search_participants">Search participants…</string>
+    <string name="share">Share</string>
+    <string name="more">More</string>
+    <string name="event_detail">Event Detail</string>
 </resources>

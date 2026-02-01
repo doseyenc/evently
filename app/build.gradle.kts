@@ -56,6 +56,7 @@ dependencies {
     // Navigation
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+    implementation(libs.viewpager2)
 
     // Lifecycle / ViewModel
     implementation(libs.lifecycle.viewmodel)

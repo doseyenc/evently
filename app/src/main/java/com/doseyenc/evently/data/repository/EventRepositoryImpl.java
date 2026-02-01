@@ -6,7 +6,11 @@ import androidx.annotation.Nullable;
 import com.doseyenc.evently.domain.model.Comment;
 import com.doseyenc.evently.domain.model.Event;
 import com.doseyenc.evently.domain.model.Participant;
+import com.doseyenc.evently.domain.repository.CommentRepository;
 import com.doseyenc.evently.domain.repository.EventRepository;
+import com.doseyenc.evently.domain.repository.LiveStatusRepository;
+import com.doseyenc.evently.domain.repository.ParticipantRepository;
+import com.doseyenc.evently.util.Constants;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -22,7 +26,7 @@ import javax.inject.Inject;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 
-public final class EventRepositoryImpl implements EventRepository {
+public final class EventRepositoryImpl implements EventRepository, ParticipantRepository, CommentRepository, LiveStatusRepository {
 
     private static final String CURRENT_USER_ID = "me";
     private static final String CURRENT_USER_NAME = "Cagri";
@@ -116,7 +120,7 @@ public final class EventRepositoryImpl implements EventRepository {
 
     @Override
     public Observable<String> getLiveStatus(String eventId) {
-        return Observable.interval(0, 30, TimeUnit.SECONDS)
+        return Observable.interval(0, Constants.LiveStatus.UPDATE_INTERVAL_SECONDS, TimeUnit.SECONDS)
                 .map(idx -> LIVE_STATUS_MESSAGES[(int) (idx % LIVE_STATUS_MESSAGES.length)]);
     }
 

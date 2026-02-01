@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable name="viewModel" type="com.doseyenc.evently.ui.detail.EventDetailViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_xxlarge">
+
+        <ImageView
+            android:id="@+id/iconLive"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_live_circle" />
+
+        <TextView
+            android:id="@+id/textLiveStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:text="@string/event_is_live"
+            android:textColor="@color/on_surface"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="Event is Live" />
+
+        <TextView
+            android:id="@+id/textNextUpdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:drawablePadding="@dimen/spacing_small"
+            android:drawableStart="@drawable/ic_clock"
+            android:gravity="center"
+            android:textColor="@color/on_surface_variant"
+            android:textSize="@dimen/text_size_medium"
+            tools:text="Next update in 30s" />
+
+        <Button
+            android:id="@+id/buttonRefresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xlarge"
+            android:background="@drawable/bg_button_refresh"
+            android:onClick="@{() -> viewModel.refreshLiveStatus()}"
+            android:paddingHorizontal="@dimen/spacing_xlarge"
+            android:paddingVertical="@dimen/spacing_medium"
+            android:text="@string/refresh_now"
+            android:textColor="@color/on_surface"
+            android:textSize="@dimen/text_size_medium" />
+    </LinearLayout>
+</layout>
