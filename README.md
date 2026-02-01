@@ -1,4 +1,4 @@
-# 📅 Evently – Modern Event Management Case Study
+# Evently – Modern Event Management Case Study
 
 **Java • Android • Clean Architecture • Material 3**
 
@@ -31,7 +31,7 @@ using **Clean Architecture** and **MVVM**, with use cases and ViewModels split b
 The project follows **Clean Architecture**, keeping business logic independent of UI and data
 sources:
 
-### 1. Domain Layer (Pure Java)
+### 1. Domain Layer 
 
 - **Entities:** Core models (`Event`, `Comment`, `Participant`, `FilterType`).
 - **Use Cases:** One responsibility per operation (event list/detail, participants, comments, live
