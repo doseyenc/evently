@@ -16,9 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -45,14 +43,10 @@ public class EventDetailFragment extends Fragment {
             R.string.tab_live_status
     };
 
-    private static final int EVENT_INFO_ANIMATION_DURATION_MS = 300;
-
     private FragmentEventDetailBinding binding;
     private EventDetailViewModel viewModel;
     private int imageHeightPx;
     private ValueAnimator imageAnimator;
-    private ValueAnimator eventInfoAnimator;
-    private int eventInfoHeaderExpandedHeight = -1;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -91,12 +85,6 @@ public class EventDetailFragment extends Fragment {
             return insets;
         });
         binding.toolbar.requestApplyInsets();
-        if (getActivity() != null) {
-            getActivity().getWindow().setStatusBarColor(
-                    ContextCompat.getColor(requireContext(), R.color.white));
-            WindowCompat.getInsetsController(getActivity().getWindow(), getActivity().getWindow().getDecorView())
-                    .setAppearanceLightStatusBars(true);
-        }
 
         binding.toolbar.setTitle("");
         View titleView = LayoutInflater.from(requireContext()).inflate(R.layout.toolbar_title_centered, binding.toolbar, false);
@@ -197,107 +185,6 @@ public class EventDetailFragment extends Fragment {
         header.setAlpha(1f);
     }
 
-    private void animateEventInfoVisibility(boolean show) {
-        if (eventInfoAnimator != null) {
-            eventInfoAnimator.cancel();
-            eventInfoAnimator = null;
-        }
-
-        View header = binding.eventInfoHeader;
-        ViewGroup.LayoutParams lp = header.getLayoutParams();
-        int startHeight = header.getHeight();
-        int endHeight = show ? (Math.max(eventInfoHeaderExpandedHeight, 0)) : 0;
-
-        if (show) {
-            if (eventInfoHeaderExpandedHeight <= 0) {
-                lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                header.setLayoutParams(lp);
-                header.setVisibility(View.VISIBLE);
-                header.getViewTreeObserver().addOnPreDrawListener(new android.view.ViewTreeObserver.OnPreDrawListener() {
-                    @Override
-                    public boolean onPreDraw() {
-                        header.getViewTreeObserver().removeOnPreDrawListener(this);
-                        int measuredHeight = header.getHeight();
-                        if (measuredHeight > 0) {
-                            eventInfoHeaderExpandedHeight = measuredHeight;
-                        }
-                        lp.height = 0;
-                        header.setLayoutParams(lp);
-                        header.setAlpha(0f);
-                        runEventInfoShowAnimation();
-                        return false;
-                    }
-                });
-                return;
-            }
-            header.setVisibility(View.VISIBLE);
-            startHeight = 0;
-            header.setAlpha(0f);
-        } else {
-            if (startHeight > 0) eventInfoHeaderExpandedHeight = startHeight;
-        }
-
-        eventInfoAnimator = ValueAnimator.ofInt(startHeight, endHeight);
-        eventInfoAnimator.setDuration(EVENT_INFO_ANIMATION_DURATION_MS);
-        final int startH = startHeight;
-        eventInfoAnimator.addUpdateListener(animation -> {
-            int value = (int) animation.getAnimatedValue();
-            lp.height = value;
-            header.setLayoutParams(lp);
-            if (show && eventInfoHeaderExpandedHeight > 0) {
-                header.setAlpha((float) value / eventInfoHeaderExpandedHeight);
-            } else if (!show && startH > 0) {
-                header.setAlpha((float) value / startH);
-            }
-        });
-        eventInfoAnimator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                if (!show) header.setVisibility(View.GONE);
-                header.setAlpha(1f);
-                eventInfoAnimator = null;
-            }
-        });
-        eventInfoAnimator.start();
-    }
-
-    private void runEventInfoShowAnimation() {
-        if (eventInfoAnimator != null) {
-            eventInfoAnimator.cancel();
-            eventInfoAnimator = null;
-        }
-        View header = binding.eventInfoHeader;
-        ViewGroup.LayoutParams lp = header.getLayoutParams();
-        int endHeight = eventInfoHeaderExpandedHeight;
-
-        if (endHeight <= 0) {
-            lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            header.setLayoutParams(lp);
-            header.setAlpha(1f);
-            header.setVisibility(View.VISIBLE);
-            return;
-        }
-
-        eventInfoAnimator = ValueAnimator.ofInt(0, endHeight);
-        eventInfoAnimator.setDuration(EVENT_INFO_ANIMATION_DURATION_MS);
-        eventInfoAnimator.addUpdateListener(animation -> {
-            int value = (int) animation.getAnimatedValue();
-            lp.height = value;
-            header.setLayoutParams(lp);
-            header.setAlpha((float) value / endHeight);
-        });
-        eventInfoAnimator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                header.setAlpha(1f);
-                lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                header.setLayoutParams(lp);
-                eventInfoAnimator = null;
-            }
-        });
-        eventInfoAnimator.start();
-    }
-
     private void observeEventState() {
         viewModel.getEventState().observe(getViewLifecycleOwner(), this::renderEventState);
     }
@@ -342,12 +229,6 @@ public class EventDetailFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (getActivity() != null) {
-            getActivity().getWindow().setStatusBarColor(
-                    ContextCompat.getColor(requireContext(), R.color.primary));
-            WindowCompat.getInsetsController(getActivity().getWindow(), getActivity().getWindow().getDecorView())
-                    .setAppearanceLightStatusBars(false);
-        }
         binding = null;
     }
 }

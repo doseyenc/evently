@@ -1,6 +1,7 @@
 package com.doseyenc.evently.ui.home;
 
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +11,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -48,6 +49,7 @@ public class EventListFragment extends Fragment implements EventListHandler {
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         binding.setHandler(this);
+        applyStatusBarForDrawer();
         setupToolbar();
         setupRecyclerView();
         setupChips();
@@ -61,6 +63,26 @@ public class EventListFragment extends Fragment implements EventListHandler {
         Toast.makeText(requireContext(), R.string.fab_clicked, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Apply status bar color and icon appearance from theme, and set DrawerLayout's
+     * status bar background so the strip above the content matches (required when
+     * using fitsSystemWindows on DrawerLayout).
+     */
+    private void applyStatusBarForDrawer() {
+        TypedValue value = new TypedValue();
+        if (requireContext().getTheme().resolveAttribute(android.R.attr.statusBarColor, value, true)) {
+            int color = value.data;
+            requireActivity().getWindow().setStatusBarColor(color);
+            binding.drawerLayout.setStatusBarBackgroundColor(color);
+        }
+        if (requireContext().getTheme().resolveAttribute(android.R.attr.windowLightStatusBar, value, true)
+                && value.type == TypedValue.TYPE_INT_BOOLEAN) {
+            WindowInsetsControllerCompat insetsController = WindowCompat.getInsetsController(
+                    requireActivity().getWindow(), requireActivity().getWindow().getDecorView());
+            insetsController.setAppearanceLightStatusBars(value.data != 0);
+        }
+    }
+
     private void setupToolbar() {
         binding.toolbar.setTitle("");
         View titleView = LayoutInflater.from(requireContext()).inflate(R.layout.toolbar_title_events, binding.toolbar, false);
@@ -68,24 +90,6 @@ public class EventListFragment extends Fragment implements EventListHandler {
         titleLp.gravity = Gravity.CENTER;
         binding.toolbar.addView(titleView, 0, titleLp);
         binding.toolbar.setNavigationOnClickListener(v -> binding.drawerLayout.openDrawer(GravityCompat.START));
-
-        if (getActivity() != null) {
-            getActivity().getWindow().setStatusBarColor(
-                    ContextCompat.getColor(requireContext(), R.color.white));
-            WindowCompat.getInsetsController(getActivity().getWindow(), getActivity().getWindow().getDecorView())
-                    .setAppearanceLightStatusBars(true);
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (getActivity() != null && binding != null) {
-            getActivity().getWindow().setStatusBarColor(
-                    ContextCompat.getColor(requireContext(), R.color.white));
-            WindowCompat.getInsetsController(getActivity().getWindow(), getActivity().getWindow().getDecorView())
-                    .setAppearanceLightStatusBars(true);
-        }
     }
 
     private void setupRecyclerView() {
