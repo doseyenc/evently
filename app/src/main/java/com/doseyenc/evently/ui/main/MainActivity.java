@@ -21,12 +21,6 @@ public class MainActivity extends AppCompatActivity {
         applyStatusBarFromTheme();
     }
 
-    /**
-     * Apply status bar color and light/dark icons from the current theme.
-     * Required because DrawerLayout with fitsSystemWindows on the event list can prevent
-     * the theme's status bar color from being applied; setting it here keeps both
-     * event list and event detail screens consistent.
-     */
     private void applyStatusBarFromTheme() {
         TypedValue value = new TypedValue();
         if (getTheme().resolveAttribute(android.R.attr.statusBarColor, value, true)) {
